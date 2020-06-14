@@ -1,4 +1,5 @@
-﻿<section id="help" class="help">
+﻿@model IList<Charity.Mvc.Models.Db.Institution>
+<section id="help" class="help">
     <h2>Komu pomagamy?</h2>
 
     <!-- SLIDE 1 -->
@@ -9,19 +10,23 @@
         </p>
 
         <ul class="help--slides-items">
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
-                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
-                </div>
+            @for (int i = 0; i < Model.Count; i+=2)
+            {
+                <li>
+                    <div class="col">
+                        <div class="title">@Model[i].Name</div>
+                        <div class="subtitle">@Model[i].Description</div>
+                    </div>
 
-                <div class="col">
-                    <div class="title">Fundacja "A kogo"</div>
-                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>
-                </div>
-            </li>
+                    <div class="col">
+                        <div class="title">@Model[i+1].Name"</div>
+                        <div class="subtitle">@Model[i+1].Description</div>
+                    </div>
+                </li>
+            }
 
-            <li>
+
+            @*<li>
                 <div class="col">
                     <div class="title">Fundacja “Dla dzieci"</div>
                     <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
@@ -31,7 +36,7 @@
                     <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
                 </div>
 
-            </li>
+            </li>*@
 
         </ul>
 

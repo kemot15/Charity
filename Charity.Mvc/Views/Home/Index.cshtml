@@ -1,4 +1,5 @@
-﻿@{
+﻿@model  MainViewModel
+@{
     ViewBag.Title = "Strona gówna";
 }
 
@@ -12,5 +13,5 @@
         @await Html.PartialAsync("Main/_StepsPartialView")
 
         @await Html.PartialAsync("Main/_AboutUsPartialView")
-        @await Html.PartialAsync("Main/_HelpPartialView")
+        @await Html.PartialAsync("Main/_HelpPartialView", Model.Institutions)
     </body>

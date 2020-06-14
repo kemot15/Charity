@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Charity.Mvc.Context;
 using Charity.Mvc.Models.Db;
+using Charity.Mvc.Services;
+using Charity.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +34,10 @@ namespace Charity.Mvc
 			{
 				options.User.RequireUniqueEmail = true;
 			});
+
+			services.AddScoped<IInstitutionService, InstitutionService>();
+			services.AddScoped<IDonationService, DonationService>();
+
 
 			services.AddControllersWithViews();
 		}
