@@ -1,4 +1,5 @@
-﻿using Charity.Mvc.Models.Db;
+﻿using Charity.Mvc.Models;
+using Charity.Mvc.Models.Db;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,5 +24,9 @@ namespace Charity.Mvc.Context
                 new IdentityRole<int> { Id = 2, Name = "User", NormalizedName = "USER" });
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Institution> Institutions { get; set; }
+        public DbSet<Donation> Donations { get; set; }
     }
 }
