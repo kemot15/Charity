@@ -10,5 +10,7 @@ namespace Charity.Mvc.Models.ViewModels
     {
         //public IList<Donation> Donations { get; set; }
         public IList<Institution> Institutions { get; set; }
+        public int BagQuantity { get; set; }
+        public int InstitutionQuantity { get; set; }
     }
 }

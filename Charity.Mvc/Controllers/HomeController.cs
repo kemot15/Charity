@@ -25,7 +25,9 @@ namespace Charity.Mvc.Controllers
 		{
 			var model = new MainViewModel
 			{
-				Institutions = await _institutionService.GetAllAsync()
+				Institutions = await _institutionService.GetAllAsync(),
+				BagQuantity = await _donationService.GetBagsQuantity(),
+				InstitutionQuantity = await _donationService.GetSupportedOrganization()
 			};
 			return View(model);
 		}

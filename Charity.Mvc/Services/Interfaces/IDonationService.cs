@@ -9,5 +9,8 @@ namespace Charity.Mvc.Services.Interfaces
     public interface IDonationService
     {
         Task<IList<Donation>> GetAllAsync();
+        Task<int> GetBagsQuantity();
+
+        Task<int> GetSupportedOrganization();
     }
 }

@@ -22,5 +22,15 @@ namespace Charity.Mvc.Services
         {
             return await _context.Donations.ToListAsync();
         }
+
+        public async Task<int> GetBagsQuantity()
+        {
+            return await _context.Donations.SumAsync(b => b.Quantity);
+        }
+
+        public async Task<int> GetSupportedOrganization()
+        {
+            return await _context.Donations.Select(i => i.Institution).Distinct().CountAsync();
+        }
     }
 }
