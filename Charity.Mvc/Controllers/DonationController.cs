@@ -12,5 +12,18 @@ namespace Charity.Mvc.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Donate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Donate(int model)
+        {
+            return View();
+        }
     }
 }

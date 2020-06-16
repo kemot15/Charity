@@ -7,5 +7,6 @@ namespace Charity.Mvc.Models.ViewModels
 {
     public class DonationViewModel
     {
+
     }
 }
