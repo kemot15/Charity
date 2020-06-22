@@ -1,27 +1,25 @@
-﻿@{ 
-    Layout = "_Layout";
+﻿@model RegistrationViewModel
+@{ 
+    Layout = "_AccountLayout";
 }
 
-@await Html.PartialAsync("Main/_HeaderPartialView")
 
     <section class="login-page">
         <h2>Załóż konto</h2>
-        <form>
+        <form asp-controller="Account" asp-action="Registration">
             <div class="form-group">
-                <input type="email" name="email" placeholder="Email" />
+                <input asp-for="Email" type="email" placeholder="Email" />
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Hasło" />
+                <input asp-for="Password" type="password" placeholder="Hasło" />
             </div>
             <div class="form-group">
-                <input type="password" name="password2" placeholder="Powtórz hasło" />
+                <input asp-for="RepeatPassword" type="password" placeholder="Powtórz hasło" />
             </div>
-
             <div class="form-group form-group--buttons">
-                <a href="login.html" class="btn btn--without-border">Zaloguj się</a>
+                <a  class="btn btn--without-border">Zaloguj się</a>
                 <button class="btn" type="submit">Załóż konto</button>
             </div>
         </form>
     </section>
 
-  @await Html.PartialAsync("Main/_FooterPartialView")
