@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Models.Form;
@@ -81,15 +82,16 @@ namespace Charity.Mvc.Controllers
         {
             if (model == null) return View(model);
             var categories = model.CategoriesCheckBox.Where(c => c.IsChecked == true).ToList();
-            var categoriesList = new List<Category>();
+            var categoriesList = new List<DonationCategory>();
             foreach(var category in categories)
             {
-                categoriesList.Add(new Category
+                categoriesList.Add(new DonationCategory
                 {
-                    //Id = category.Id,
-                    Name = category.Text
+                    CategoryId = category.Id,
+                    DonationId = model.Id
                 });
             }
+           // _categoryService.GetHashCode().Where(X500DistinguishedName => X500DistinguishedName.Id == categ)
 
             //var institutionRadioButton = model.Institutions.SingleOrDefault(i => i.IsChecked);
             //var institution = new Institution

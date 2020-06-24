@@ -1,9 +1,5 @@
-﻿using Charity.Mvc.Models.Db;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
 
 namespace Charity.Mvc.Models.Db
 {
@@ -11,7 +7,7 @@ namespace Charity.Mvc.Models.Db
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public IList<Category> Categories { get; set; }
+        public IList<DonationCategory> Categories { get; set; }
         public Institution Institution { get; set; }
         public string Street { get; set; }
         public string City { get; set; }

@@ -93,5 +93,10 @@ namespace Charity.Mvc.Controllers
             await SignInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> Admin()
+        {
+            return View();
+        }
     }
 }

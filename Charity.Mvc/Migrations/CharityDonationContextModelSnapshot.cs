@@ -26,15 +26,10 @@ namespace Charity.Mvc.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DonationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DonationId");
 
                     b.ToTable("Categories");
                 });
@@ -78,6 +73,26 @@ namespace Charity.Mvc.Migrations
                     b.HasIndex("InstitutionId");
 
                     b.ToTable("Donations");
+                });
+
+            modelBuilder.Entity("Charity.Mvc.Models.Db.DonationCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonationId");
+
+                    b.ToTable("DonationCategories");
                 });
 
             modelBuilder.Entity("Charity.Mvc.Models.Db.Institution", b =>
@@ -197,14 +212,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "cdc37c07-b020-4e78-bb18-37871506ee6e",
+                            ConcurrencyStamp = "7f38bd7f-2f8f-472a-bcd9-056be7794b2e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "b9ac431f-a480-4ca5-9367-eeda7fcb31a2",
+                            ConcurrencyStamp = "b5fcfb15-6caa-439f-a994-d199673f1555",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -311,18 +326,20 @@ namespace Charity.Mvc.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Charity.Mvc.Models.Db.Category", b =>
-                {
-                    b.HasOne("Charity.Mvc.Models.Db.Donation", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("DonationId");
-                });
-
             modelBuilder.Entity("Charity.Mvc.Models.Db.Donation", b =>
                 {
                     b.HasOne("Charity.Mvc.Models.Db.Institution", "Institution")
                         .WithMany()
                         .HasForeignKey("InstitutionId");
+                });
+
+            modelBuilder.Entity("Charity.Mvc.Models.Db.DonationCategory", b =>
+                {
+                    b.HasOne("Charity.Mvc.Models.Db.Donation", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("DonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
