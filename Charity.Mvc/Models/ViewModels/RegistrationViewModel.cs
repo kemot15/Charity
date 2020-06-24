@@ -16,12 +16,12 @@ namespace Charity.Mvc.Models.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Pole wymagane")]
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Pole wymagane")]
         [Compare("Password", ErrorMessage = "Podane hasła są różne")]
-        [PasswordPropertyText]
+        [DataType(DataType.Password)]
         public string RepeatPassword { get; set; }
     }
 }

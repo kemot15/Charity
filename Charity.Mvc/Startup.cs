@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Charity.Mvc.Context;
+﻿using Charity.Mvc.Context;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Services;
 using Charity.Mvc.Services.Interfaces;
@@ -37,6 +33,7 @@ namespace Charity.Mvc
 
 			services.AddScoped<IInstitutionService, InstitutionService>();
 			services.AddScoped<IDonationService, DonationService>();
+			services.AddScoped<ICategoryService, CategoryService>();
 
 
 			services.AddControllersWithViews();

@@ -19,6 +19,7 @@ namespace Charity.Mvc.Models.Db
         public DateTime PickUpDate { get; set; }
         public DateTime PickUpTime { get; set; }
         public string PickUpComment { get; set; }
+        public string Phone { get; set; }
     }
 }
 

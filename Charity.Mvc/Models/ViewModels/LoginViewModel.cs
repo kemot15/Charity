@@ -13,6 +13,7 @@ namespace Charity.Mvc.Models.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

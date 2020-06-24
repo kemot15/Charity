@@ -1,5 +1,6 @@
 ﻿using Charity.Mvc.Context;
 using Charity.Mvc.Models.Db;
+using Charity.Mvc.Models.ViewModels;
 using Charity.Mvc.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,6 +32,12 @@ namespace Charity.Mvc.Services
         public async Task<int> GetSupportedOrganization()
         {
             return await _context.Donations.Select(i => i.Institution).Distinct().CountAsync();
+        }
+
+        public async Task<bool> AddDonation(Donation donation)
+        {
+            _context.Add(donation);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
