@@ -2,6 +2,7 @@
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,11 @@ namespace Charity.Mvc.Services
         public async Task<IList<Institution>> GetAllAsync()
         {
             return await _context.Institutions.ToListAsync();
+        }
+
+        public async Task<Institution> GetInstitutionById(int id)
+        {
+            return await _context.Institutions.FindAsync(id);
         }
     }
 }

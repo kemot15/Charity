@@ -7,9 +7,6 @@ using Charity.Mvc.Models.Form;
 using Charity.Mvc.Models.ViewModels;
 using Charity.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Server.IISIntegration;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Charity.Mvc.Controllers
 {
@@ -17,11 +14,13 @@ namespace Charity.Mvc.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IInstitutionService _institutionService;
+        private readonly IDonationService _donationService;
 
-        public DonationController(ICategoryService categoryService, IInstitutionService institutionService)
+        public DonationController(ICategoryService categoryService, IInstitutionService institutionService, IDonationService donationService)
         {
             _categoryService = categoryService;
             _institutionService = institutionService;
+            _donationService = donationService;
         }
 
         public IActionResult Index()
@@ -40,9 +39,10 @@ namespace Charity.Mvc.Controllers
                 {
                     Id = category.Id,
                     Text = category.Name,
-                    IsChecked = true
+                    //IsChecked = false
                 });
             }
+
             var institutionList = await _institutionService.GetAllAsync();
             var institutionRadioButton = new List<InstitutionRadioButton>();
             if (institutionList == null)
@@ -51,7 +51,7 @@ namespace Charity.Mvc.Controllers
                 {
                     Id = 0,
                     Name = "Brak instytucji",
-                    Desription = "",
+                    Description = "",
                    // IsChecked = false
                 });
             }else
@@ -62,15 +62,16 @@ namespace Charity.Mvc.Controllers
                     {
                         Id = institution.Id,
                         Name = institution.Name,
-                        Desription = institution.Description,
+                        Description = institution.Description,
                         IsChecked = false
                     });
                 }
             }            
             var model = new DonationViewModel
             {
-                Categories = categoryCheckBox,
-                Institutions = institutionRadioButton
+                CategoriesCheckBox = categoryCheckBox,
+                Institutions = institutionRadioButton,
+                PickUpDate = DateTime.Now
             };
             return View(model);
         }
@@ -78,9 +79,48 @@ namespace Charity.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Donate(DonationViewModel model)
         {
-            if (model == null) return View();
+            if (model == null) return View(model);
+            var categories = model.CategoriesCheckBox.Where(c => c.IsChecked == true).ToList();
+            var categoriesList = new List<Category>();
+            foreach(var category in categories)
+            {
+                categoriesList.Add(new Category
+                {
+                    //Id = category.Id,
+                    Name = category.Text
+                });
+            }
 
+            //var institutionRadioButton = model.Institutions.SingleOrDefault(i => i.IsChecked);
+            //var institution = new Institution
+            //{
+            //    Id = institutionRadioButton.Id,
+            //    Name = institutionRadioButton.Name,
+            //    Description = institutionRadioButton.Description
+            //};
+
+            var donation = new Donation
+            {
+                Quantity = model.Quantity,
+                Categories = categoriesList,
+                Institution = await _institutionService.GetInstitutionById(model.Institution.Id),
+                Street = model.Street,
+                City = model.City,
+                ZipCode = model.ZipCode,
+                PickUpDate = model.PickUpDate,
+                PickUpTime = model.PickUpTime,
+                PickUpComment = model.PickUpComment,
+                Phone = model.Phone
+            };
+            await _donationService.AddDonation(donation);
+            return RedirectToAction("FormConfirmation");
+        }
+
+        public IActionResult FormConfirmation()
+        {
             return View();
         }
     }
+
+    
 }

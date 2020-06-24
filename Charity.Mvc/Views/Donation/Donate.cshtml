@@ -1,231 +1,232 @@
 ﻿@model DonationViewModel
 @{ 
-    Layout = "_Layout";
-}
+    Layout = "_FormLayout"; 
+ }
 
+    <header class="header--form-page">
+        @await Html.PartialAsync("Main/_MenuPartialView")
 
-      <div class="slogan container container--90">
-        <div class="slogan--item">
-          <h1>
-            Oddaj rzeczy, których już nie chcesz<br />
-            <span class="uppercase">potrzebującym</span>
-          </h1>
+        <div class="slogan container container--90">
+            <div class="slogan--item">
+                <h1>
+                    Oddaj rzeczy, których już nie chcesz<br />
+                    <span class="uppercase">potrzebującym</span>
+                </h1>
 
-          <div class="slogan--steps">
-            <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
-            <ul class="slogan--steps-boxes">
-              <li>
-                <div><em>1</em><span>Wybierz rzeczy</span></div>
-              </li>
-              <li>
-                <div><em>2</em><span>Spakuj je w worki</span></div>
-              </li>
-              <li>
-                <div><em>3</em><span>Wybierz fundację</span></div>
-              </li>
-              <li>
-                <div><em>4</em><span>Zamów kuriera</span></div>
-              </li>
-            </ul>
-          </div>
+                <div class="slogan--steps">
+                    <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
+                    <ul class="slogan--steps-boxes">
+                        <li>
+                            <div><em>1</em><span>Wybierz rzeczy</span></div>
+                        </li>
+                        <li>
+                            <div><em>2</em><span>Spakuj je w worki</span></div>
+                        </li>
+                        <li>
+                            <div><em>3</em><span>Wybierz fundację</span></div>
+                        </li>
+                        <li>
+                            <div><em>4</em><span>Zamów kuriera</span></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+    </header>
 
-    <section class="form--steps">
-      <div class="form--steps-instructions">
+<section class="form--steps">
+    <div class="form--steps-instructions">
         <div class="form--steps-container">
-          <h3>Ważne!</h3>
-          <p data-step="1" class="active">
-            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-            wiedzieć komu najlepiej je przekazać.
-          </p>
-          <p data-step="2">
-            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-            wiedzieć komu najlepiej je przekazać.
-          </p>
-          <p data-step="3">
-           Wybierz jedną, do
-            której trafi Twoja przesyłka.
-          </p>
-          <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
+            <h3>Ważne!</h3>
+            <p data-step="1" class="active">
+                Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+                wiedzieć komu najlepiej je przekazać.
+            </p>
+            <p data-step="2">
+                Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+                wiedzieć komu najlepiej je przekazać.
+            </p>
+            <p data-step="3">
+                Wybierz jedną, do
+                której trafi Twoja przesyłka.
+            </p>
+            <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
         </div>
-      </div>
+    </div>
 
-      <div class="form--steps-container">
+    <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
         <form asp-action="Donate" asp-controller="Donation" method="post">
-          <!-- STEP 1: class .active is switching steps -->
+            <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
-                @foreach (var category in Model.Categories)
+                @for (var i = 0; i < Model.CategoriesCheckBox.Count; i++)
                 {
                     <div class="form-group form-group--checkbox">
                         <label>
-                            <input class="checkbox" type="checkbox" asp-for="@category.IsChecked" />
-                            <input type="hidden" asp-for="@category.Id" />
-                            <input type="hidden" asp-for="@category.Text"/>
+                            @*<input class="checkbox" type="checkbox" asp-for="@Model.CategoriesCheckBox[i].IsChecked" value="@Model.CategoriesCheckBox[i].Id"/>*@
+                            @Html.CheckBoxFor(c => Model.CategoriesCheckBox[i].IsChecked)
+                            <input type="hidden" asp-for="@Model.CategoriesCheckBox[i].Id" />
+                            <input type="hidden" asp-for="@Model.CategoriesCheckBox[i].Text" />
                             @*<span class="checkbox"></span>*@
-                            <span class="description">@category.Text</span>
+                        <span class="description">@Model.CategoriesCheckBox[i].Text</span>
                         </label>
                     </div>
-                }           
-                
+                 }
+
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn next-step">Dalej</button>
                 </div>
             </div>
 
-          <!-- STEP 2 -->
-          <div data-step="2">
-            <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+            <!-- STEP 2 -->
+            <div data-step="2">
+                <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
-            <div class="form-group form-group--inline">
-              <label>
-                Liczba 60l worków:
-                <input asp-for="Quantity" type="number" step="1" min="1" />
-              </label>
+                <div class="form-group form-group--inline">
+                    <label>
+                        Liczba 60l worków:
+                        <input asp-for="Quantity" type="number" step="1" min="1" />
+                    </label>
+                </div>
+
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <button type="button" class="btn next-step">Dalej</button>
+                </div>
             </div>
 
-            <div class="form-group form-group--buttons">
-              <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="button" class="btn next-step">Dalej</button>
-            </div>
-          </div>
+            <!-- STEP 4 -->
+            <div data-step="3">
+                <h3>Wybierz organizacje, której chcesz pomóc:</h3>
+                @for  (int i = 0; i < Model.Institutions.Count; i++)
+                {
+                    <div class="form-group form-group--checkbox">
+                        <label>
+                            @Html.RadioButtonFor(m => m.Institution.Id, Model.Institutions[i].Id)
+                            <input type="hidden" asp-for="@Model.Institutions[i].Name" />
+                            <input type="hidden" asp-for="@Model.Institutions[i].Description" />
+                            <input type="hidden" asp-for="@Model.Institutions[i].Id" />
+                            @*<span class="checkbox radio"></span>*@
+                            <span class="description">
+                                <div id="institution_name" class="title">@Model.Institutions[i].Name</div>
+                                <div id="institution_description" class="subtitle">
+                                    @Model.Institutions[i].Description
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                 }
 
-
-
-          <!-- STEP 4 -->
-          <div data-step="3">
-              <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-              @foreach (var institution in Model.Institutions)
-              {
-                  <div class="form-group form-group--checkbox">
-                      <label>
-                          <input type="radio" value="@institution.Id" asp-for="@institution.IsChecked" />
-                          <input type="hidden" asp-for="@institution.Id" />
-                          <span class="checkbox radio"></span>
-                          <span class="description">
-                              <div class="title">@institution.Name</div>
-                              <div class="subtitle">
-                                  @institution.Desription
-                              </div>
-                          </span>
-                      </label>
-                  </div>
-              }          
-
-              <div class="form-group form-group--buttons">
-                  <button type="button" class="btn prev-step">Wstecz</button>
-                  <button type="button" class="btn next-step">Dalej</button>
-              </div>
-          </div>
-
-          <!-- STEP 5 -->
-          <div data-step="4">
-            <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
-
-            <div class="form-section form-section--columns">
-              <div class="form-section--column">
-                <h4>Adres odbioru</h4>
-                <div class="form-group form-group--inline">
-                  <label> Ulica <input type="text" asp-for="Street" /> </label>
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <button type="button" class="btn next-step">Dalej</button>
                 </div>
-
-                <div class="form-group form-group--inline">
-                  <label> Miasto <input type="text" name="city" /> </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label>
-                    Kod pocztowy <input type="text" asp-for="ZipCode" />
-                  </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label>
-                    Numer telefonu <input asp-for="Phone" />
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-section--column">
-                <h4>Termin odbioru</h4>
-                <div class="form-group form-group--inline">
-                  <label> Data <input type="date" asp-for="PickUpDate" /> </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label> Godzina <input type="time" asp-for="PickUpTime" /> </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label>
-                    Uwagi dla kuriera
-                    <textarea asp-for="PickUpComment" rows="5"></textarea>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group form-group--buttons">
-              <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="button" class="btn next-step">Dalej</button>
-            </div>
-          </div>
-
-          <!-- STEP 6 -->
-          <div data-step="5">
-            <h3>Podsumowanie Twojej darowizny</h3>
-
-            <div class="summary">
-              <div class="form-section">
-                <h4>Oddajesz:</h4>
-                <ul>
-                  <li>
-                    <span class="icon icon-bag"></span>
-                    <span class="summary--text"
-                      > worki ubrań w dobrym stanie dla dzieci</span
-                    >
-                  </li>
-
-                  <li>
-                    <span class="icon icon-hand"></span>
-                    <span class="summary--text">
-                      Dla fundacji "Mam marzenie" w Warszawie</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="form-section form-section--columns">
-                <div class="form-section--column">
-                  <h4>Adres odbioru:</h4>
-                  <ul>
-                    <li>Prosta 51</li>
-                    <li>Warszawa</li>
-                    <li>99-098</li>
-                    <li>123 456 789</li>
-                  </ul>
-                </div>
-
-                <div class="form-section--column">
-                  <h4>Termin odbioru:</h4>
-                  <ul>
-                    <li>13/12/2018</li>
-                    <li>15:40</li>
-                    <li>Brak uwag</li>
-                  </ul>
-                </div>
-              </div>
             </div>
 
-            <div class="form-group form-group--buttons">
-              <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="submit" class="btn">Potwierdzam</button>
+            <!-- STEP 5 -->
+            <div data-step="4">
+                <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
+
+                <div class="form-section form-section--columns">
+                    <div class="form-section--column">
+                        <h4>Adres odbioru</h4>
+                        <div class="form-group form-group--inline">
+                            <label> Ulica <input type="text" asp-for="Street" /> </label>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label> Miasto <input type="text" asp-for="City" /> </label>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label>
+                                Kod pocztowy <input type="text" asp-for="ZipCode" />
+                            </label>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label>
+                                Numer telefonu <input type="tel" asp-for="Phone" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section--column">
+                        <h4>Termin odbioru</h4>
+                        <div class="form-group form-group--inline">
+                            <label> Data <input type="date" asp-for="PickUpDate" /> </label>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label> Godzina <input type="time" asp-for="PickUpTime" /> </label>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label>
+                                Uwagi dla kuriera
+                                <textarea asp-for="PickUpComment" rows="5"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <button type="button" class="btn next-step" id="Summary">Dalej</button>
+                </div>
             </div>
-          </div>
+
+            <!-- STEP 6 -->
+            <div data-step="5">
+                <h3>Podsumowanie Twojej darowizny</h3>
+
+                <div class="summary">
+                    <div class="form-section">
+                        <h4>Oddajesz:</h4>
+                        <ul>
+                            <li>
+                                <span class="icon icon-bag"></span>
+                                <span id="summary_institution_name" class="summary--text"></span>
+                            </li>
+
+                            <li>
+                                <span class="icon icon-hand"></span>
+                                <span id="summary_institution_description" class="summary--text">
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="form-section form-section--columns">
+                        <div class="form-section--column">
+                            <h4>Adres odbioru:</h4>
+                            <ul>
+                                <li id="StreetLi"></li>
+                                <li id="CityLi"></li>
+                                <li id="ZipCodeLi"></li>
+                                <li id="PhoneLi"></li>
+                            </ul>
+                        </div>
+
+                        <div class="form-section--column">
+                            <h4>Termin odbioru:</h4>
+                            <ul>
+                                <li id="PickUpDateLi"></li>
+                                <li id="PickUpTimeLi"></li>
+                                <li id="PickUpCommentLi"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group--buttons">
+                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <button type="submit" class="btn">Potwierdzam</button>
+                </div>
+            </div>
         </form>
-      </div>
-    </section>
+    </div>
+</section>
 
- @await Html.PartialAsync("Main/_FooterPartialView")
 <script src="~/js/app.js"></script>

@@ -52,6 +52,9 @@ namespace Charity.Mvc.Migrations
                     b.Property<int?>("InstitutionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PickUpComment")
                         .HasColumnType("nvarchar(max)");
 
@@ -194,14 +197,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "1004821a-75cc-4929-870a-ed08e71a7694",
+                            ConcurrencyStamp = "cdc37c07-b020-4e78-bb18-37871506ee6e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "5e1579a5-e18d-4ee3-bbe4-690b03166250",
+                            ConcurrencyStamp = "b9ac431f-a480-4ca5-9367-eeda7fcb31a2",
                             Name = "User",
                             NormalizedName = "USER"
                         });

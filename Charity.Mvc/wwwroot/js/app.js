@@ -167,8 +167,47 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
+
+    const street = document.getElementById('Street');
+    const city = document.getElementById('City');
+    const zipCode = document.getElementById('ZipCode');
+    const pickUpDate = document.getElementById('PickUpDate');
+    const pickUpTime = document.getElementById('PickUpTime');
+    const pickUpComment = document.getElementById('PickUpComment');
+    const phone = document.getElementById('Phone');
+    const summaryButton = document.getElementById('Summary');
+
+    const streetLi = document.getElementById('StreetLi');
+    const cityLi = document.getElementById('CityLi');
+    const zipCodeLi = document.getElementById('ZipCodeLi');
+    const pickUpDateLi = document.getElementById('PickUpDateLi');
+    const pickUpTimeLi = document.getElementById('PickUpTimeLi');
+    const pickUpCommentLi = document.getElementById('PickUpCommentLi');
+    const phoneLi = document.getElementById('PhoneLi');
+    const summaryDescription = document.getElementById('summary_institution_description');
+    const summaryName = document.getElementById('summary_institution_name');
+    
+
+    summaryButton.addEventListener('click', function () {
+        const description = document.querySelector('input[type="radio"]:checked').nextElementSibling;
+        const name = description.nextElementSibling;
+        console.log(name);
+        summaryDescription.innerText = description.value;
+        summaryName.innerText = name.value;
+        streetLi.innerText = street.value;
+        cityLi.innerText = city.value;
+        zipCodeLi.innerText = zipCode.value;
+        pickUpDateLi.innerText = pickUpDate.value;
+        pickUpTimeLi.innerText = pickUpTime.value;
+        if (pickUpComment.value == '')
+            pickUpCommentLi.innerText = 'Brak uwag';
+        else
+        pickUpCommentLi.innerText = pickUpComment.value;
+        phoneLi.innerText = phone.value;
+    });
 });

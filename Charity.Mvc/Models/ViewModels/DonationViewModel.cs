@@ -19,7 +19,7 @@ namespace Charity.Mvc.Models.ViewModels
         //public DateTime PickUpDate { get; set; }
         //public DateTime PickUpTime { get; set; }
         //public string PickUpComment { get; set; }
-        public IList<CategoryCheckBoxModel> Categories { get; set; }
+        public IList<CategoryCheckBoxModel> CategoriesCheckBox { get; set; }
 
         public IList<InstitutionRadioButton> Institutions { get; set; }
 
