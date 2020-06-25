@@ -35,6 +35,7 @@ namespace Charity.Mvc
 			services.AddScoped<IInstitutionService, InstitutionService>();
 			services.AddScoped<IDonationService, DonationService>();
 			services.AddScoped<ICategoryService, CategoryService>();
+			services.AddScoped<IAdminService, AdminService>();
 
 
 			services.AddControllersWithViews();

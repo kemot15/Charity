@@ -103,9 +103,11 @@ namespace Charity.Mvc.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -134,11 +136,19 @@ namespace Charity.Mvc.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -212,14 +222,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "7d2e65a9-96cb-41af-bcff-bdf3e828a3b6",
+                            ConcurrencyStamp = "f45db4e7-b680-4e03-bddf-f81f5f0013d9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "59dc5c2d-1d06-427a-a35d-75826ca6857e",
+                            ConcurrencyStamp = "8c46e15f-b136-49c6-b717-3aa9bb732218",
                             Name = "User",
                             NormalizedName = "USER"
                         });

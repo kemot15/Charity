@@ -1,0 +1,79 @@
+﻿@model IList<Charity.Mvc.Models.Db.User>
+@{
+    Layout = "_AppLayout";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Użytkownicy</h1>
+    <p class="mb-4">List użytkowników.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Role</h6>
+            @using (Html.BeginForm("UserList", "Admin", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="form-group col col-4">
+                        <select name="selectedRole" asp-items="@ViewBag.RoleList" class="form-control"></select>
+                    </div>
+                    <div class="form-group col col-2"><button class="btn btn-outline-info" type="submit">Wybierz</button></div>
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>                            
+                            <th>Imię</th>
+                            <th>Nazwisko</th>
+                            <th>Email</th>
+                            <th>Edytuj</th>
+                            <th>Zablokuj/Odblokuj</th>
+                            <th>Usuń</th>
+                        </tr>
+                    </thead>
+                    @*<tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot>*@
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                        <tr>                          
+                            <td>@user.Name</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td><a class="btn btn-info btn-circle" asp-action="Edit" asp-controller="Account" asp-route-id="@user.Id"><i class="fas fa-edit"></i></a></td>
+                            <td><a class="btn btn-info btn-circle" asp-action="Lock" asp-controller="Admin" asp-route-id="@user.Id">
+                                    @if (user.LockoutEnabled)
+                                    {
+                                        <i class="fas fa-user-lock"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-unlock"></i>
+                                    }
+                                </a>
+                            </td>
+                            <td><a class="btn btn-danger btn-circle" asp-action="Delete" asp-controller="Admin" asp-route-id="@user.Id" onclick="return confirm('Czy na pewno chesz usunąć użytkownika?')"></a><i class="fas fa-trash"></i></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
