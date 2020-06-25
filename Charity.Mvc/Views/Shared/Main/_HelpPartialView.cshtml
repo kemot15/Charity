@@ -12,17 +12,27 @@
         <ul class="help--slides-items">
             @for (int i = 0; i < Model.Count; i+=2)
             {
-                <li>
+            <li>
+                <div class="col">
+                    <div class="title">@Model[i].Name</div>
+                    <div class="subtitle">@Model[i].Description</div>
+                </div>
+                @if (i + 1 < Model.Count)
+                {
                     <div class="col">
-                        <div class="title">@Model[i].Name</div>
-                        <div class="subtitle">@Model[i].Description</div>
+                        <div class="title">@Model[i + 1].Name"</div>
+                        <div class="subtitle">@Model[i + 1].Description</div>
                     </div>
+                }
+                else
+                {
+                    <div class="col">
+                        <div class="title"></div>
+                        <div class="subtitle"></div>
+                    </div>
+                }
 
-                    <div class="col">
-                        <div class="title">@Model[i+1].Name"</div>
-                        <div class="subtitle">@Model[i+1].Description</div>
-                    </div>
-                </li>
+            </li>
             }
 
 

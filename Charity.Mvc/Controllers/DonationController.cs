@@ -91,21 +91,13 @@ namespace Charity.Mvc.Controllers
                     DonationId = model.Id
                 });
             }
-           // _categoryService.GetHashCode().Where(X500DistinguishedName => X500DistinguishedName.Id == categ)
-
-            //var institutionRadioButton = model.Institutions.SingleOrDefault(i => i.IsChecked);
-            //var institution = new Institution
-            //{
-            //    Id = institutionRadioButton.Id,
-            //    Name = institutionRadioButton.Name,
-            //    Description = institutionRadioButton.Description
-            //};
+          
 
             var donation = new Donation
             {
                 Quantity = model.Quantity,
                 Categories = categoriesList,
-                Institution = await _institutionService.GetInstitutionById(model.Institution.Id),
+                Institution = await _institutionService.GetInstitutionByIdAsync(model.Institution.Id),
                 Street = model.Street,
                 City = model.City,
                 ZipCode = model.ZipCode,

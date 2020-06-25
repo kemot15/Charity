@@ -19,7 +19,9 @@ namespace Charity.Mvc.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "User");
         }
 
         [HttpGet]
@@ -71,7 +73,7 @@ namespace Charity.Mvc.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
 
                 if (result.IsLockedOut)

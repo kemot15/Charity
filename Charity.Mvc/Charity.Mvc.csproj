@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200624183034_DonationCategory.cs" />
-    <Compile Remove="Migrations\20200624183034_DonationCategory.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 

@@ -212,14 +212,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "7f38bd7f-2f8f-472a-bcd9-056be7794b2e",
+                            ConcurrencyStamp = "7d2e65a9-96cb-41af-bcff-bdf3e828a3b6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "b5fcfb15-6caa-439f-a994-d199673f1555",
+                            ConcurrencyStamp = "59dc5c2d-1d06-427a-a35d-75826ca6857e",
                             Name = "User",
                             NormalizedName = "USER"
                         });

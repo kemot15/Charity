@@ -24,7 +24,8 @@ namespace Charity.Mvc
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-            services.AddDbContext<CharityDonationContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
+			var cs = Configuration.GetConnectionString("SQL");
+			services.AddDbContext<CharityDonationContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
             services.AddIdentity<User, IdentityRole<int>>().AddEntityFrameworkStores<CharityDonationContext>().AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(options =>
 			{
@@ -54,7 +55,7 @@ namespace Charity.Mvc
 			app.UseStaticFiles();
 
 
-			//app.SeedAdminUser();
+			app.SeedAdminUser();
 
 			app.UseAuthentication();
 			app.UseRouting();
