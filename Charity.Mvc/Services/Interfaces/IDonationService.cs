@@ -13,5 +13,6 @@ namespace Charity.Mvc.Services.Interfaces
 
         Task<int> GetSupportedOrganization();
         Task<bool> AddDonation(Donation donation);
+        Task<Donation> GetDonationByIdAsync(int id);
     }
 }

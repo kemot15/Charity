@@ -1,0 +1,84 @@
+﻿@model IList<Donation>
+@{
+    Layout = "_AppLayout";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Użytkownicy</h1>
+    <p class="mb-4">List darów.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Dary</h6>
+            @using (Html.BeginForm("UserList", "Admin", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="form-group col col-4">
+                        <select name="selectedRole" asp-items="@ViewBag.RoleList" class="form-control"></select>
+                    </div>
+                    <div class="form-group col col-2"><button class="btn btn-outline-info" type="submit">Wybierz</button></div>
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Instytucja</th>
+                            <th>Status</th>
+                            <th>Ulica</th>
+                            <th>Miasto</th>
+                            <th>Data odebrania</th>
+                            <th>Godzina odebrania</th>
+                            <th>Szczegóły</th>
+                        </tr>
+                    </thead>
+                    @*<tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot>*@
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>@item.Institution.Name</td>
+                            <td>@item.Status</td>
+                            <td>@item.Street</td>
+                            <td>@item.City</td>
+                            <td>@item.PickUpDate</td>
+                            <td>@item.PickUpTime</td>
+                            <td><a class="btn btn-info btn-circle" asp-action="DonationDetail" asp-controller="Donation" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a></td>
+        @*<td>
+            <a class="btn btn-info btn-circle" asp-action="Lock" asp-controller="Admin" asp-route-id="@user.Id">
+                @if (user.LockoutEnabled)
+                {
+                    <i class="fas fa-user-lock"></i>
+                }
+                else
+                {
+                    <i class="fas fa-unlock"></i>
+                }
+            </a>
+        </td>
+        <td><a class="btn btn-danger btn-circle" asp-action="UserRemove" asp-controller="Admin" asp-route-id="@user.Id" onclick="return confirm('Czy na pewno chesz usunąć użytkownika?')"></a><i class="fas fa-trash"></i></td>*@
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

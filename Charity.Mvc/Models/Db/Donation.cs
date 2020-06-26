@@ -9,6 +9,7 @@ namespace Charity.Mvc.Models.Db
         public int Quantity { get; set; }
         public IList<DonationCategory> Categories { get; set; }
         public Institution Institution { get; set; }
+        public Status Status { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }

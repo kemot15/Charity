@@ -21,7 +21,7 @@ namespace Charity.Mvc.Services
 
         public async Task<IList<Donation>> GetAllAsync()
         {
-            return await _context.Donations.ToListAsync();
+            return await _context.Donations.Include(i => i.Institution).ToListAsync();
         }
 
         public async Task<int> GetBagsQuantity()
@@ -38,6 +38,11 @@ namespace Charity.Mvc.Services
         {
             _context.Add(donation);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Donation> GetDonationByIdAsync(int id)
+        {
+            return await _context.Donations.SingleOrDefaultAsync(d => d.Id == id);
         }
     }
 }

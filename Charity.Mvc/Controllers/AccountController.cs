@@ -77,6 +77,7 @@ namespace Charity.Mvc.Controllers
             var link = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
             var email = new EmailViewModel
             {
+                To = user.Email,
                 Subject = "Wiadomość weryfikująca email",
                 IsHtml = true,
                 Body = $"Kliknij link, żeby potwierdzić adres e-mail <a href=\"{link}\">Link</a> </br> Jeżeli link nie działa skopiuj go do przegladarki {link}"
@@ -264,6 +265,7 @@ namespace Charity.Mvc.Controllers
             var link = Url.Action(nameof(ResetPassword), "Account", new { email = user.Email, token }, Request.Scheme, Request.Host.ToString());
             var email = new EmailViewModel
             {
+                To = user.Email,
                 Subject = "Wiadomość weryfikująca email",
                 IsHtml = true,
                 Body = $"Kliknij link, żeby zresetować hasło <a href=\"{link}\">Link</a> </br> Jeżeli link nie działa skopiuj go do przegladarki {link}"

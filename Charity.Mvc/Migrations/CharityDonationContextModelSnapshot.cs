@@ -62,6 +62,9 @@ namespace Charity.Mvc.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
@@ -222,14 +225,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "f45db4e7-b680-4e03-bddf-f81f5f0013d9",
+                            ConcurrencyStamp = "40172269-aff9-4ac2-8a0c-872a972b278a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "8c46e15f-b136-49c6-b717-3aa9bb732218",
+                            ConcurrencyStamp = "35d5ca96-8097-4edf-a74c-cb330b7cc6c2",
                             Name = "User",
                             NormalizedName = "USER"
                         });

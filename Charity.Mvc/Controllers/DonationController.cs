@@ -104,7 +104,8 @@ namespace Charity.Mvc.Controllers
                 PickUpDate = model.PickUpDate,
                 PickUpTime = model.PickUpTime,
                 PickUpComment = model.PickUpComment,
-                Phone = model.Phone
+                Phone = model.Phone,
+                Status = Status.Deposited
             };
             await _donationService.AddDonation(donation);
             return RedirectToAction("FormConfirmation");
@@ -113,6 +114,19 @@ namespace Charity.Mvc.Controllers
         public IActionResult FormConfirmation()
         {
             return View();
+        }
+
+        public async Task<IActionResult> List()
+        {
+            var model = await _donationService.GetAllAsync();
+            return View(model);
+        }
+
+        public async Task<IActionResult> DonationDetail(int id)
+        {
+            var model = await _donationService.GetDonationByIdAsync(id);
+            if (model == null) return RedirectToAction("List", "Donation");
+            return View(model);
         }
     }
 
