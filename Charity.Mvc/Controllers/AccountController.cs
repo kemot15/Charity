@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using System.Threading.Tasks;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Models.ViewModels;
@@ -55,15 +56,8 @@ namespace Charity.Mvc.Controllers
                     await UserManager.AddToRoleAsync(user, "User");
 
                     //wyslanie email z potwierdzeniem logowania
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-                    var link = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, code}, Request.Scheme, Request.Host.ToString());
-                    var email = new EmailViewModel
-                    {
-                        Subject = "Wiadomość weryfikująca email",
-                        IsHtml = true,
-                        Body = $"Kliknij link do weryfikacji <a href=\"{link}\">Weryfikacja email</a> </br> Jeżeli link nie działa skopiuj go do przegladarki {link}"
-                    };
-                    await EmailService.SendEmailAsync(email);
+                    
+                    await SendEmailTokenConfirmationAsync(user);
                     return RedirectToAction("Login", "Account");
                 }
                 foreach (var error in result.Errors)
@@ -74,13 +68,29 @@ namespace Charity.Mvc.Controllers
             ViewBag.Error = true;
 
             return View(model);
+            
         }
 
-        public async Task<IActionResult> VerifyEmail (string userId, string code)
+        public async Task SendEmailTokenConfirmationAsync(User user)
+        {
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            var link = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
+            var email = new EmailViewModel
+            {
+                Subject = "Wiadomość weryfikująca email",
+                IsHtml = true,
+                Body = $"Kliknij link, żeby potwierdzić adres e-mail <a href=\"{link}\">Link</a> </br> Jeżeli link nie działa skopiuj go do przegladarki {link}"
+            };
+            await EmailService.SendEmailAsync(email);
+        }
+
+        
+
+        public async Task<IActionResult> VerifyEmail (string userId, string token)
         {
             var user = await UserManager.FindByIdAsync(userId);
             if (user == null) return RedirectToAction("Registration", "Account");
-            var result = await UserManager.ConfirmEmailAsync(user, code);
+            var result = await UserManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
                 return View();
@@ -141,10 +151,7 @@ namespace Charity.Mvc.Controllers
             var user = id == 0 ? await UserManager.GetUserAsync(User) : await _adminService.GetUser(id);
             if (user == null)
                 return RedirectToAction("Login", "Account");//redirect to Login?
-            //var address = await _adminService.GetUserAddress(user.Id);
-            //if (address != null) user.Address = address;
-            //else
-            //    user.Address = new Address();
+
 
             var model = new EditUserViewModel
             {
@@ -159,24 +166,16 @@ namespace Charity.Mvc.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            //ViewBag.Active = "Account";
+           
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             var user = await UserManager.GetUserAsync(User);
             if (user == null) return View("Login", "Account");
-
-            //user.Address = await _accountService.GetUserAddress(user.Id);
-            //if (user.Address == null)
-            //    user.Address = new Address();
+                        
             user.Name = model.Name;
             user.LastName = model.LastName;
-            //user.PhoneNumber = model.PhoneNumber;
-            //user.Address.Street = model.Street;
-            //user.Address.ZipCode = model.ZipCode;
-            //user.Address.City = model.City;
-            //user.Address.Country = model.Country;
 
             var result = await UserManager.UpdateAsync(user);
             if (result.Succeeded)
@@ -188,7 +187,6 @@ namespace Charity.Mvc.Controllers
             {
                 ModelState.AddModelError("", error.Description);
             }
-            //return RedirectToAction("Index", "Dashboard");
             return View(model);
         }
 
@@ -226,41 +224,98 @@ namespace Charity.Mvc.Controllers
             return View(model);
         }
 
-        public string Email { get; set; }
+        [HttpGet]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
 
-        public bool DisplayConfirmAccountLink { get; set; }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {         
+          
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Nie ma takiego użytkownika" });
+                if (!await UserManager.IsEmailConfirmedAsync(user)){
+                    ModelState.AddModelError(string.Empty, "Użytkownik nie ma zweryfikowanego adresu e-mail");
+                    return View(model);
+                }
+                if (await UserManager.IsLockedOutAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "Użytkownik jest zablokowany");
+                    return View(model);
+                }
+                var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+                await SendEmailTokenPasswordResetAsync(user);
 
-        public string EmailConfirmationUrl { get; set; }
+                return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Wiadomość z linkiem do zresetowania hasła została wysłana na podany adres e-mail" });
+            }
+            return View(model);                     
+            
+        }
 
-        //public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
-        //{
-        //    if (email == null)
-        //    {
-        //        return RedirectToPage("/Index");
-        //    }
+        public async Task SendEmailTokenPasswordResetAsync(User user)
+        {
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var link = Url.Action(nameof(ResetPassword), "Account", new { email = user.Email, token }, Request.Scheme, Request.Host.ToString());
+            var email = new EmailViewModel
+            {
+                Subject = "Wiadomość weryfikująca email",
+                IsHtml = true,
+                Body = $"Kliknij link, żeby zresetować hasło <a href=\"{link}\">Link</a> </br> Jeżeli link nie działa skopiuj go do przegladarki {link}"
+            };
+            await EmailService.SendEmailAsync(email);
+        }
 
-        //    var user = await UserManager.FindByEmailAsync(email);
-        //    if (user == null)
-        //    {
-        //        return NotFound($"Unable to load user with email '{email}'.");
-        //    }
+        public IActionResult ForgotPasswordConfirmation(string confirmationText)
+        {
+            ViewBag.ConfirmationText = confirmationText;
+            return View();
+        }
 
-        //    Email = email;
-        //    // Once you add a real email sender, you should remove this code that lets you confirm the account
-        //    DisplayConfirmAccountLink = true;
-        //    if (DisplayConfirmAccountLink)
-        //    {
-        //        var userId = await UserManager.GetUserIdAsync(user);
-        //        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        //        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        //        EmailConfirmationUrl = Url.Page(
-        //            "/Account/ConfirmEmail",
-        //            pageHandler: null,
-        //            values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-        //            protocol: Request.Scheme);
-        //    }
+        
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string email, string token)
+        {
+            //var user = await UserManager.FindByEmailAsync(email);
+            //if (user == null)
+            //    return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Nie odnaleziono użytkownika" });
+            //var correctToken = await UserManager.GeneratePasswordResetTokenAsync(user);
+            //correctToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(correctToken));
 
-        //    return View();
-        //}
+            //if (correctToken != token)
+            //    return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Token jest niepoprawny" });
+            var model = new NewPasswordViewModel
+            {
+                Email = email,
+                Token = token
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(NewPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Nie odnaleziono użytkownika" });
+            var result = await UserManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return View();
+            }
+            return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Hasło zostało pomyślnie zmienione" });
+        }
     }
 }
