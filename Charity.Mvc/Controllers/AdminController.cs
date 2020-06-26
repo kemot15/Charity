@@ -73,5 +73,15 @@ namespace Charity.Mvc.Controllers
             }
             return RedirectToAction("Edit", "Account", new { id });
         }
+
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> UserRemove(int id) 
+        {
+            var user = await _adminService.GetUserAsync(id);
+            if (user == null) RedirectToAction("UserList", "Admin");
+            await _adminService.DeleteUserAsync(user);
+            return RedirectToAction("UserList", "Admin");
+            
+        }
     }
 }

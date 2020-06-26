@@ -30,6 +30,8 @@ namespace Charity.Mvc
             services.Configure<IdentityOptions>(options =>
 			{
 				options.User.RequireUniqueEmail = true;
+				options.Password.RequiredLength = 4;
+				options.SignIn.RequireConfirmedEmail = true;
 			});
 
 			services.AddScoped<IInstitutionService, InstitutionService>();

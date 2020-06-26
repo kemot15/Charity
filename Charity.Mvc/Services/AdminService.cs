@@ -1,6 +1,7 @@
 ﻿using Charity.Mvc.Context;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Services.Interfaces;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,12 @@ namespace Charity.Mvc.Services
         public async Task<User> GetUser(int id)
         {
             return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<bool> DeleteUserAsync (User user)
+        {
+            _context.Users.Remove(user);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
