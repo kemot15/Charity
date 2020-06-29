@@ -40,11 +40,7 @@ namespace Charity.Mvc.Services
             }
             return await _context.SaveChangesAsync() > 0;
         }
-
-        public async Task<User> GetUser(int id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
+        
 
         public async Task<bool> DeleteUserAsync (User user)
         {

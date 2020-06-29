@@ -47,9 +47,16 @@
                                     {
                                         <div class="collapse" id="collapseExample">
                                             <div class="card card-body">
-                                                @if (await UserManager.IsInRoleAsync(await AdminService.GetUser(Model.Id), role.Name))
+                                                @if (await UserManager.IsInRoleAsync(await AdminService.GetUserAsync(Model.Id), role.Name))
                                                 {
-                                                    <p>@role.Name</p><a type="button" asp-action="SwitchRole" asp-controller="Admin" asp-route-roleName="@role.Name" asp-route-id="@Model.Id">Usuń z roli @role.Name</a>
+                                                    <p>@role.Name</p>
+                                                    var userRoles = await UserManager.GetRolesAsync(await AdminService.GetUserAsync(Model.Id));
+                                                    if (userRoles.Count > 1)
+                                                    {
+                                                        <a type="button" asp-action="SwitchRole" asp-controller="Admin" asp-route-roleName="@role.Name" asp-route-id="@Model.Id">Usuń z roli @role.Name</a>
+
+                                                    }
+
                                                 }
                                                 else
                                                 {

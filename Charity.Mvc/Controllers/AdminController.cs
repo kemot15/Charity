@@ -62,15 +62,18 @@ namespace Charity.Mvc.Controllers
             var user = await _adminService.GetUserAsync(id);
             if (user == null)
                 return RedirectToAction("List");
+            var userRoles = await UserManager.GetRolesAsync(user);
+                                        
             if (await UserManager.IsInRoleAsync(user, roleName))
             {
+                if (userRoles.Count <= 1)
+                    return RedirectToAction("Error", "Home");
                 await UserManager.RemoveFromRoleAsync(user, roleName);
             }
             else
             {
                 await UserManager.AddToRoleAsync(user, roleName);
-
-            }
+            }                        
             return RedirectToAction("Edit", "Account", new { id });
         }
 

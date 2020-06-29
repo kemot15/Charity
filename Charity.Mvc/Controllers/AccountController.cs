@@ -149,7 +149,7 @@ namespace Charity.Mvc.Controllers
         public async Task<IActionResult> Edit(int id = 0)
         {
 
-            var user = id == 0 ? await UserManager.GetUserAsync(User) : await _adminService.GetUser(id);
+            var user = id == 0 ? await UserManager.GetUserAsync(User) : await _adminService.GetUserAsync(id);
             if (user == null)
                 return RedirectToAction("Login", "Account");//redirect to Login?
 
