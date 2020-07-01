@@ -1,4 +1,7 @@
 ﻿@model IList<User>
+@inject RoleManager<IdentityRole<int>> RoleManager
+@inject Charity.Mvc.Services.Interfaces.IAdminService AdminService
+@inject UserManager<User> UserManager
 @{
     Layout = "_AppLayout";
 }
@@ -66,7 +69,19 @@
                                     }
                                 </a>
                             </td>
-                            <td><a class="btn btn-danger btn-circle" asp-action="UserRemove" asp-controller="Admin" asp-route-id="@user.Id" onclick="return confirm('Czy na pewno chesz usunąć użytkownika?')"></a><i class="fas fa-trash"></i></td>
+                            <td>
+                                @if (await UserManager.GetUserAsync(User) != user)
+                                {
+                                    <a class="btn btn-danger btn-circle" asp-action="UserRemove" asp-controller="Admin" asp-route-id="@user.Id" onclick="return confirm('Czy na pewno chesz usunąć użytkownika?')"></a><i class="fas fa-trash"></i>
+                                }
+
+                                @*@{var usersInAdminRole = await AdminService.CountUsersInRolesAsync(RoleManager.FindByNameAsync("Admin").Id);
+        }
+        @if (!(usersInAdminRole <= 1 && await UserManager.IsInRoleAsync(user, "Admin")))
+        {
+            <a class="btn btn-danger btn-circle" asp-action="UserRemove" asp-controller="Admin" asp-route-id="@user.Id" onclick="return confirm('Czy na pewno chesz usunąć użytkownika?')"></a><i class="fas fa-trash"></i>
+        }*@
+                            </td>
                         </tr>
                         }
                     </tbody>

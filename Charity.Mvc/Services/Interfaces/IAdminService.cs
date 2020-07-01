@@ -11,5 +11,6 @@ namespace Charity.Mvc.Services.Interfaces
         Task<bool> UserLockAsync(int id);
         Task<User> GetUserAsync(int id);
         Task<bool> DeleteUserAsync(User user);
+        int CountUsersInRoles(int roleId);
     }
 }

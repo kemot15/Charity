@@ -249,7 +249,7 @@ namespace Charity.Mvc.Controllers
                     ModelState.AddModelError(string.Empty, "Użytkownik jest zablokowany");
                     return View(model);
                 }
-                var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+               // var token = await UserManager.GeneratePasswordResetTokenAsync(user);
                 await SendEmailTokenPasswordResetAsync(user);
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Wiadomość z linkiem do zresetowania hasła została wysłana na podany adres e-mail" });

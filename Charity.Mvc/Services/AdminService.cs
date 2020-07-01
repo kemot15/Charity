@@ -1,6 +1,7 @@
 ﻿using Charity.Mvc.Context;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,12 @@ namespace Charity.Mvc.Services
         {
             _context.Users.Remove(user);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public int CountUsersInRoles(int roleId)
+        {
+            //var userRoles = await _context.UserRoles.CountAsync(); ToListAsync();
+            return _context.UserRoles.Count(u => u.RoleId == roleId);// userRoles.Count(u => u.RoleId == roleId);
         }
     }
 }
