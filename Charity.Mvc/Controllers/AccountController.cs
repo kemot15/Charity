@@ -31,7 +31,7 @@ namespace Charity.Mvc.Controllers
         {
             if (User.IsInRole("Admin"))
                 return RedirectToAction("Index", "Admin");
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("UserIndex", "Account");
         }
 
         [HttpGet]
@@ -148,8 +148,8 @@ namespace Charity.Mvc.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id = 0)
         {
-
-            var user = id == 0 ? await UserManager.GetUserAsync(User) : await _adminService.GetUserAsync(id);
+            if (id != 0 && !User.IsInRole("Admin")) return RedirectToAction("Logout", "Account"); 
+            var user = (id == 0) ? await UserManager.GetUserAsync(User) : await _adminService.GetUserAsync(id);
             if (user == null)
                 return RedirectToAction("Login", "Account");//redirect to Login?
 
@@ -319,5 +319,10 @@ namespace Charity.Mvc.Controllers
             }
             return RedirectToAction("ForgotPasswordConfirmation", "Account", new { confirmationText = "Hasło zostało pomyślnie zmienione" });
         }
+
+        public IActionResult UserIndex()
+        {
+            return View();
+        }       
     }
 }

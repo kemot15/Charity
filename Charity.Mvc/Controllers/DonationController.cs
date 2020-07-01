@@ -7,6 +7,7 @@ using Charity.Mvc.Models.Db;
 using Charity.Mvc.Models.Form;
 using Charity.Mvc.Models.ViewModels;
 using Charity.Mvc.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Charity.Mvc.Controllers
@@ -16,12 +17,14 @@ namespace Charity.Mvc.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IInstitutionService _institutionService;
         private readonly IDonationService _donationService;
+        private readonly UserManager<User> UserManaget;
 
-        public DonationController(ICategoryService categoryService, IInstitutionService institutionService, IDonationService donationService)
+        public DonationController(ICategoryService categoryService, IInstitutionService institutionService, IDonationService donationService, UserManager<User> userManaget)
         {
             _categoryService = categoryService;
             _institutionService = institutionService;
             _donationService = donationService;
+            UserManaget = userManaget;
         }
 
         public IActionResult Index()
@@ -80,6 +83,8 @@ namespace Charity.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Donate(DonationViewModel model)
         {
+            var user = await UserManaget.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
             if (model == null) return View(model);
             var categories = model.CategoriesCheckBox.Where(c => c.IsChecked == true).ToList();
             var categoriesList = new List<DonationCategory>();
@@ -105,7 +110,8 @@ namespace Charity.Mvc.Controllers
                 PickUpTime = model.PickUpTime,
                 PickUpComment = model.PickUpComment,
                 Phone = model.Phone,
-                Status = Status.Deposited
+                Status = Status.Deposited,
+                User = user
             };
             await _donationService.AddDonation(donation);
             return RedirectToAction("FormConfirmation");
@@ -118,7 +124,9 @@ namespace Charity.Mvc.Controllers
 
         public async Task<IActionResult> List()
         {
-            var model = await _donationService.GetAllAsync();
+            var user = await UserManaget.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+            var model = User.IsInRole("Admin") ? await _donationService.GetAllAsync() : await _donationService.GetAllUserAsync(user);
             return View(model);
         }
 
@@ -128,7 +136,5 @@ namespace Charity.Mvc.Controllers
             if (model == null) return RedirectToAction("List", "Donation");
             return View(model);
         }
-    }
-
-    
+    }    
 }

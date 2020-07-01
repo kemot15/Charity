@@ -68,12 +68,17 @@ namespace Charity.Mvc.Migrations
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InstitutionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Donations");
                 });
@@ -225,14 +230,14 @@ namespace Charity.Mvc.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "40172269-aff9-4ac2-8a0c-872a972b278a",
+                            ConcurrencyStamp = "49000319-1519-4e01-b3b6-b97de3ac50c8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "35d5ca96-8097-4edf-a74c-cb330b7cc6c2",
+                            ConcurrencyStamp = "1231d705-c821-4aa3-9686-bdec1c3abe39",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -344,6 +349,10 @@ namespace Charity.Mvc.Migrations
                     b.HasOne("Charity.Mvc.Models.Db.Institution", "Institution")
                         .WithMany()
                         .HasForeignKey("InstitutionId");
+
+                    b.HasOne("Charity.Mvc.Models.Db.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Charity.Mvc.Models.Db.DonationCategory", b =>

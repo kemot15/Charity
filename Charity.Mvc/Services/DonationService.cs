@@ -23,6 +23,10 @@ namespace Charity.Mvc.Services
         {
             return await _context.Donations.Include(i => i.Institution).ToListAsync();
         }
+        public async Task<IList<Donation>> GetAllUserAsync(User user)
+        {
+            return await _context.Donations.Include(i => i.Institution).Where(d => d.User == user).ToListAsync();
+        }
 
         public async Task<int> GetBagsQuantity()
         {
