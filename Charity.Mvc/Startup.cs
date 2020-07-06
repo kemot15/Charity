@@ -30,7 +30,7 @@ namespace Charity.Mvc
             services.Configure<IdentityOptions>(options =>
 			{
 				options.User.RequireUniqueEmail = true;
-				options.Password.RequiredLength = 4;
+				options.Password.RequiredLength = 8;
 				options.SignIn.RequireConfirmedEmail = true;
 			});
 
