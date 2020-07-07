@@ -9,8 +9,11 @@ namespace Charity.Mvc.Models.ViewModels
 {
     public class RegistrationViewModel
     {
-        
 
+        [Required(ErrorMessage = "Pole wymagane")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Pole wymagane")]
+        public string LastName { get; set; }
         [Required(ErrorMessage = "Pole wymagane")]
         [EmailAddress(ErrorMessage = "Nie poprawny adres email")]
         public string Email { get; set; }

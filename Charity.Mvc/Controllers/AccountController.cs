@@ -48,7 +48,9 @@ namespace Charity.Mvc.Controllers
                 var user = new User
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Name = model.Name,
+                    LastName = model.LastName
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

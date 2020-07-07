@@ -7,17 +7,29 @@
     <section class="login-page">
         <h2>Załóż konto</h2>
         <form asp-controller="Account" asp-action="Registration">
+            <div asp-validation-summary="All" class="form-group"></div>
+            <div class="form-group">
+                <input asp-for="Name" type="text" placeholder="Imię" />
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="LastName" type="text" placeholder="Nazwisko" />
+                <span asp-validation-for="LastName"></span>
+            </div>
             <div class="form-group">
                 <input asp-for="Email" type="email" placeholder="Email" />
+                <span asp-validation-for="Email"></span>
             </div>
             <div class="form-group">
                 <input asp-for="Password" type="password" placeholder="Hasło" />
+                <span asp-validation-for="Password"></span>
             </div>
             <div class="form-group">
                 <input asp-for="RepeatPassword" type="password" placeholder="Powtórz hasło" />
+                <span asp-validation-for="RepeatPassword"></span>
             </div>
             <div class="form-group form-group--buttons">
-                <a asp-action="Login" asp-controller="Account"  class="btn btn--without-border">Zaloguj się</a>
+                <a asp-action="Login" asp-controller="Account" class="btn btn--without-border">Zaloguj się</a>
                 <button class="btn" type="submit">Załóż konto</button>
             </div>
         </form>
