@@ -132,6 +132,7 @@ namespace Charity.Mvc.Controllers
 
         public async Task<IActionResult> DonationDetail(int id)
         {
+            
             var model = await _donationService.GetDonationByIdAsync(id);
             if (model == null) return RedirectToAction("List", "Donation");
             return View(model);

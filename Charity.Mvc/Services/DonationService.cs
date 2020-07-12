@@ -46,7 +46,7 @@ namespace Charity.Mvc.Services
 
         public async Task<Donation> GetDonationByIdAsync(int id)
         {
-            return await _context.Donations.SingleOrDefaultAsync(d => d.Id == id);
+            return await _context.Donations.Include(i => i.Institution).SingleOrDefaultAsync(d => d.Id == id);
         }
     }
 }
