@@ -15,5 +15,7 @@ namespace Charity.Mvc.Services.Interfaces
         Task<bool> AddDonation(Donation donation);
         Task<Donation> GetDonationByIdAsync(int id);
         Task<IList<Donation>> GetAllUserAsync(User user);
+
+        Task<bool> UpdateDonationStatusAsync(Donation donation);
     }
 }

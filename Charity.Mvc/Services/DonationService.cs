@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Charity.Mvc.Services
@@ -47,6 +48,12 @@ namespace Charity.Mvc.Services
         public async Task<Donation> GetDonationByIdAsync(int id)
         {
             return await _context.Donations.Include(i => i.Institution).SingleOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task<bool> UpdateDonationStatusAsync(Donation donation)
+        {
+            _context.Donations.Update(donation);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

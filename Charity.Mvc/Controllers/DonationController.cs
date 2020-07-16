@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Charity.Mvc.Migrations;
 using Charity.Mvc.Models.Db;
 using Charity.Mvc.Models.Form;
 using Charity.Mvc.Models.ViewModels;
@@ -131,11 +132,23 @@ namespace Charity.Mvc.Controllers
         }
 
         public async Task<IActionResult> DonationDetail(int id)
-        {
-            
+        {            
             var model = await _donationService.GetDonationByIdAsync(id);
             if (model == null) return RedirectToAction("List", "Donation");
             return View(model);
+        }
+
+        public async Task<IActionResult> ChangeStatus(Donation model)
+        {
+            var donation = await _donationService.GetDonationByIdAsync(model.Id);
+            if (donation != null)
+            {
+                donation.Status = model.Status;
+                donation.PickUpDate = DateTime.Now;
+                donation.PickUpTime = DateTime.Now;
+                await _donationService.UpdateDonationStatusAsync(donation);
+            }
+            return RedirectToAction("DonationDetail", "Donation", new { id = donation.Id });
         }
     }    
 }
