@@ -228,7 +228,7 @@ namespace Charity.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ForgotPassword()
+        public IActionResult ForgotPassword()
         {
             return View();
         }
@@ -283,7 +283,7 @@ namespace Charity.Mvc.Controllers
 
         
         [HttpGet]
-        public async Task<IActionResult> ResetPassword(string email, string token)
+        public IActionResult ResetPassword(string email, string token)
         {
             //var user = await UserManager.FindByEmailAsync(email);
             //if (user == null)
